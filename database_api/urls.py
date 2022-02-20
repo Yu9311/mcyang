@@ -1,49 +1,31 @@
-from django.urls import path, re_path
-from .views import StudentLoginApiView,CourseApiView, CourseDetail, TeacherApiView, TeacherDetail, StudentApiView, StudentDetail, \
-    SignApiView, SignDetail, Race_AnswerApiView, Race_AnswerDetail, Race_ListApiView, Race_ListDetail, Sign_RecordApiView, Sign_RecordDetail, TeamApiView, TeamDetail, Team_DescApiView, Team_DescDetail, Team_MemberApiView, Team_MemberDetail
+from django.urls import path, include,re_path
+from django.conf.urls import url
+from rest_framework.routers import DefaultRouter
+
+from .views import *
+
+router = DefaultRouter()
+router.register('StudentLogin', StudentLoginViewSet)
+router.register('Student', StudentViewSet)
+router.register('TeacherLogin', TeacherLoginViewSet)
+router.register('CourseCreate', CourseViewSet)
+router.register('CourseRecord', CourseRecordViewSet)
+router.register('Sign', SignViewSet)
+router.register('SignRecord', SignRecordViewSet)
+router.register('Race_List', Race_ListViewSet)
+router.register('Race_Answer', Race_AnswerViewSet)
+router.register('Race_List_R', Race_List_R_ViewSet)
+router.register('Team_Desc', Team_DescViewSet)
+router.register('Team', TeamViewSet)
+router.register('Team_Member', Team_MemberViewSet)
+router.register('QA_Topic', QA_TopicViewSet)
+router.register('Question', QuestionViewSet)
+router.register('Question_Q', Question_QViewSet)
+router.register('Answer_Member', Answer_MemberViewSet)
+
 
 urlpatterns = [
 
-    # StudentLogin API
-    path('api/StudentLogin/', StudentLoginApiView.as_view()),
+    path('api/', include(router.urls)),
 
-    # Course API
-    path('api/course/', CourseApiView.as_view()),
-    path('api/course/detail/<int:C_id>/', CourseDetail.as_view()),
-
-    # Teacher API
-    path('api/teacher/', TeacherApiView.as_view()),
-    path('api/teacher/detail/<int:T_id>/', TeacherDetail.as_view()),
-
-    # Student API
-    path('api/student/', StudentApiView.as_view()),
-    path('api/student/detail/<int:S_id>/', StudentDetail.as_view()),
-
-    # Sign API
-    path('api/sign/', SignApiView.as_view()),
-    path('api/sign/detail/<int:Sign_id>/', SignDetail.as_view()),
-
-    # Race_Answer API
-    path('api/race_answer/', Race_AnswerApiView.as_view()),
-    path('api/race_answer/detail/<int:R_id>/', Race_AnswerDetail.as_view()),
-
-    # Race_List API
-    path('api/race_list/', Race_ListApiView.as_view()),
-    path('api/race_list/detail/<int:Time>/', Race_ListDetail.as_view()),
-
-    # Sign_Record API
-    path('api/sign_record/', Sign_RecordApiView.as_view()),
-    path('api/sign_record/detail/<int:SR_id>/', Sign_RecordDetail.as_view()),
-
-    # Team API
-    path('api/team/', TeamApiView.as_view()),
-    path('api/team/detail/<int:Team_id>/', TeamDetail.as_view()),
-
-    # Team_Desc API
-    path('api/team_desc/', Team_DescApiView.as_view()),
-    path('api/team_desc/detail/<int:TeamDesc_id>/', Team_DescDetail.as_view()),
-
-    # Team_Member API
-    path('api/team_member/', Team_MemberApiView.as_view()),
-    path('api/team_member/detail/<int:TeamMember_id>/', Team_MemberDetail.as_view()),
 ]

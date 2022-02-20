@@ -31,3 +31,7 @@ def update(request):
     article.save()
 
     return HttpResponseRedirect('/')
+
+
+def login(request):
+    return None

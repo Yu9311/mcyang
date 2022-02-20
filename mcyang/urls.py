@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from sql_test.views import delete,get_id,index,update
+from sql_test.views import delete,get_id,index,update,login
 from database_api import views
 
 urlpatterns = [
