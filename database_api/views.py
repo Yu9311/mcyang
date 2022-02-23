@@ -1,7 +1,9 @@
 from django.http import HttpResponse
 
 from django.http.response import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
 
 from rest_framework.parsers import JSONParser
 from rest_framework import status, viewsets, generics
@@ -16,10 +18,27 @@ from .models import Course,Course_Record, Teacher, Student, Sign, Race_Answer, R
     Team, Team_Member, QA_Topic, Question, Answer_Member
 
 
+# bg1.老師登入
+@csrf_exempt
+def login(request):
+    return render(request, 'login.html', {})
 
-# def abc(request, acc):
-#     accounts = Student.objects.filter(S_id=acc)
-#     return render(request, "index.html", locals())
+def user_login(request):
+    if request.method =='POST':
+        email = request.POST["email"]
+        password = request.POST["password"]
+        try:
+            if Teacher.objects.filter(T_Email=email, T_Password=password).exists():
+                return render(request, 'index.html',{})
+            else:
+                print("Email OR Password Error! Please try again!!!!")
+                return redirect('/')
+        except Exception as identifier:
+            print("Exception!!!!")
+            return redirect('/')
+    else:
+        print("Method IS NOT POST!!!!")
+        return render(request, 'login.html', {})
 
 # 1.StudentLoginAPI 學生登入
 class StudentLoginViewSet(viewsets.ModelViewSet):
@@ -220,16 +239,16 @@ class Team_DescViewSet(ModelViewSet):
     serializer_class = Team_DescSerializer
     queryset = Team_Desc.objects.all()
 
-    lookup_field = 'TeamDesc_id'
+    lookup_field = 'C_id'
 
     def get_queryset(self):
-        if 'TeamDesc_id' in self.kwargs:
-            return Team_Desc.objects.filter(TeamDesc_id=self.kwargs['TeamDesc_id'])
+        if 'C_id' in self.kwargs:
+            return Team_Desc.objects.filter(C_id=self.kwargs['C_id'])
         else:
             return Team_Desc.objects.all()
 
-    def update(self, request, TeamDesc_id):
-        stu = Team_Desc.objects.get(TeamDesc_id=TeamDesc_id)
+    def update(self, request, C_id):
+        stu = Team_Desc.objects.get(C_id=C_id)
         serializer = Team_DescSerializer(stu, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -409,3 +428,5 @@ class Answer_MemberViewSet(ModelViewSet):
 
     def post(self, request):
         return self.create(request)
+
+

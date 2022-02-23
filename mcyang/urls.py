@@ -21,10 +21,10 @@ from database_api import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('database_api.urls')),
-    path('',index),
-    path('delete/<int:article_id>',delete),
-    path('get_id/<int:id>',get_id),
-    path('update/',update)
+    # path('',index),
+    # path('delete/<int:article_id>',delete),
+    # path('get_id/<int:id>',get_id),
+    # path('update/',update)
 
 
 
